@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.css';
 
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
@@ -11,8 +11,10 @@ import Registro from './Registro';
 import Carrito from './Carrito';
 
 export default function App() {
+  const [listaCarrito, setListaCarrito] = useState([]);
+  console.log(listaCarrito, 'from router');
   return (
-    <Router>
+    <Router listaCarrito={listaCarrito}>
       <Link className="link menu  p-2" to="/">
         Inicio
       </Link>
@@ -31,10 +33,16 @@ export default function App() {
 
       <Switch>
         <Route path="/tienda">
-          <Tienda />
+          <Tienda
+            listaCarrito={listaCarrito}
+            setListaCarrito={setListaCarrito}
+          />
         </Route>
         <Route path="/carrito">
-          <Carrito />
+          <Carrito
+            listaCarrito={listaCarrito}
+            setListaCarrito={setListaCarrito}
+          />
         </Route>
         <Route path="/login">
           <Login />
@@ -43,7 +51,10 @@ export default function App() {
           <Registro />
         </Route>
         <Route path="/producto/:id/">
-          <Producto />
+          <Producto
+            listaCarrito={listaCarrito}
+            setListaCarrito={setListaCarrito}
+          />
         </Route>
         <Route path="/">
           <Home />

@@ -3,7 +3,7 @@ import './style.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function Tienda() {
+export default function Tienda({ listaCarrito, setListaCarrito }) {
   const [listaProductos, setListaProductos] = useState([]);
 
   const url = 'https://apimintic.herokuapp.com/api/product/';
@@ -19,6 +19,11 @@ export default function Tienda() {
 
   console.log(listaProductos);
 
+  const addToCart = (idProduct) => {
+    const tempCarrito = listaCarrito;
+    tempCarrito.push(idProduct);
+    setListaCarrito(tempCarrito);
+  };
   return (
     <div>
       <h1 className="bg-danger subtitulo">CATALOGO DE PRODUCTOS</h1>
@@ -32,7 +37,15 @@ export default function Tienda() {
               </h5>
               <h4 className="relleno">${producto.price}</h4>
               <p className="relleno">{producto.info}</p>
-              <button className=" btn btn-danger mb-4">Agregar</button>
+              <button
+                onClick={() => {
+                  addToCart(producto);
+                }}
+                className=" btn btn-danger 
+              mb-4"
+              >
+                Agregar
+              </button>
               <Link
                 className=" btn btn-info mb-4"
                 to={'producto/' + producto.id}

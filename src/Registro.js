@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './style.css';
+import { useHistory } from 'react-router-dom';
 
 export default function Registro() {
-  const [name, setName] = useState('camilo');
-  const [email, setEmail] = useState('camilo@mail.com');
-  const [password, setPassword] = useState('abcd');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [registro, setRegistro] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const changeName = ({ target: { value } }) => {
     setName(value);
@@ -32,10 +35,19 @@ export default function Registro() {
     try {
       const response = await axios.post(url, newUser);
       console.log(response);
+      if (response.status === 201) {
+        setRegistro(true);
+        setTimeout(() => setRedirect(true), 2000);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  if (redirect) {
+    const history = useHistory();
+    history.push('/login');
+  }
 
   return (
     <div className="container">
@@ -68,6 +80,11 @@ export default function Registro() {
         >
           Guardar
         </a>
+        {registro ? (
+          <div className="alert-success p-3 mt-3">
+            usuario registrado con exito, serás re dirigido al login
+          </div>
+        ) : null}
       </div>
     </div>
   );

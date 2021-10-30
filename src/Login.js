@@ -4,8 +4,8 @@ import './style.css';
 import { useHistory } from 'react-router-dom';
 
 export default function Login() {
-  const [email, setEmail] = useState('camilooo@mail.com1');
-  const [password, setPassword] = useState('abcd');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [login, setLogin] = useState(false);
   const [mensaje, setmensaje] = useState('');
 

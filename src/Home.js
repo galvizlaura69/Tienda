@@ -30,7 +30,7 @@ export default function Home() {
       <div>
         <div className="row portadaHome  p-5 mt-2">
           <div className="col-sm-12">
-            <h1 className="titulo">TITULO DE LA PAGINA</h1>
+            <h1 className="titulo">SUNGLASSES</h1>
           </div>
         </div>
 

@@ -5,10 +5,12 @@ import { useHistory } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+
   const [password, setPassword] = useState('');
   const [login, setLogin] = useState(false);
   const [mensaje, setmensaje] = useState('');
-  const [deleteMessage, setDeleteMessage] = useState('');
+  const [updateMessage, setupdateMessage] = useState('');
 
   const changeEmail = ({ target: { value } }) => {
     setEmail(value);
@@ -18,62 +20,46 @@ export default function Login() {
     setPassword(value);
   };
 
-  const comprobar = async () => {
-    const userLogin = {
-      email: email,
-      password: password,
-    };
-    console.log(userLogin);
-
-    const url = 'https://app-ecommerce69.herokuapp.com/users';
-    try {
-      const { data } = await axios.get(url);
-      console.log(data);
-
-      const userFound = data.find((user) => user.email === userLogin.email);
-      console.log(userFound, 'userencontrado');
-      if (!!userFound) {
-        setLogin(true);
-      } else {
-        setmensaje('su correo no esta registrado');
-      }
-    } catch (error) {
-      setLogin(false);
-      console.log(error);
-    }
+  const changeNewEmail = ({ target: { value } }) => {
+    setNewEmail(value);
   };
 
-  const eliminar = async (userFound) => {
-    console.log('eliminando', userFound.id);
-    const url = 'https://app-ecommerce69.herokuapp.com/delete/' + userFound.id;
+  const actualizar = async (userFound) => {
+    const newUser = {
+      username: userFound.username,
+      name: userFound.username,
+      email: newEmail,
+      password: '1234',
+    };
+    console.log('actualizando', newUser);
+    const url = 'https://app-ecommerce69.herokuapp.com/update/' + userFound.id;
     console.log(url);
+
     try {
-      const response = await axios.delete(url);
+      const response = await axios.put(url, newUser);
       console.log(response);
-      const deleteMessage =
-        userFound.email + 'ha sido eliminado de nuestra base de datos';
-      setDeleteMessage(deleteMessage);
+      const updateMessage = userFound.email + 'ha sido actualizado';
+      setupdateMessage(updateMessage);
     } catch (error) {
       console.log(error, 'error');
     }
   };
 
-  const encontrarParaBorrar = async () => {
-    const userLogin = {
+  const encontrarParaActualizar = async () => {
+    const userUpdate = {
       email: email,
       password: password,
     };
-    console.log(userLogin);
+    // console.log(userUpdate);
 
     const url = 'https://app-ecommerce69.herokuapp.com/users';
     try {
       const { data } = await axios.get(url);
-      console.log(data);
+      // console.log(data);
 
-      const userFound = data.find((user) => user.email === userLogin.email);
-      console.log(userFound, 'userencontrado');
+      const userFound = data.find((user) => user.email === userUpdate.email);
       if (!!userFound) {
-        eliminar(userFound);
+        actualizar(userFound);
       } else {
         setmensaje('su correo no esta registrado');
       }
@@ -91,7 +77,7 @@ export default function Login() {
   return (
     <div className="container">
       <div className="registrar card p-3 d-block m-auto mt-5">
-        <h1 className="text-center">Login</h1>
+        <h1 className="text-center">Actualizar</h1>
         <input
           value={email}
           onChange={changeEmail}
@@ -102,28 +88,32 @@ export default function Login() {
         <input
           value={password}
           onChange={changePassword}
-          className="form-control"
+          className="form-control mb-3"
           type="password"
           placeholder="password"
         />
+
+        <input
+          value={newEmail}
+          onChange={changeNewEmail}
+          className="form-control"
+          type="text"
+          placeholder="nuevo email"
+        />
+
         <a
-          onClick={comprobar}
+          onClick={encontrarParaActualizar}
           className="btn btn-info d-block m-auto mt-3 text-white"
         >
           Entrar
         </a>
-        <a
-          onClick={encontrarParaBorrar}
-          className="btn btn-danger d-block m-auto mt-3 text-white"
-        >
-          Eliminar
-        </a>
 
-        {!login && mensaje.length > 0 ? (
+        {mensaje.length > 0 ? (
           <h5 className="alert-danger mt-3 p-3 ">{mensaje}</h5>
         ) : null}
-        {deleteMessage.length > 0 ? (
-          <h5 className="alert-warning mt-3 p-3 ">{deleteMessage}</h5>
+
+        {updateMessage.length > 0 ? (
+          <h5 className="alert-warning mt-3 p-3 ">{updateMessage}</h5>
         ) : null}
       </div>
     </div>

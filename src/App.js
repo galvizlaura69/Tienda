@@ -9,6 +9,7 @@ import Tienda from './Tienda';
 import Login from './Login';
 import Registro from './Registro';
 import Carrito from './Carrito';
+import Actualizar from './Update';
 
 export default function App() {
   const [listaCarrito, setListaCarrito] = useState([]);
@@ -22,8 +23,12 @@ export default function App() {
         Tienda
       </Link>
       <Link className="link menu  p-2" to="/login">
-        Mi cuenta
+        Login
       </Link>
+      <Link className="link menu  p-2" to="/actualizar">
+        Actualizar
+      </Link>
+
       <Link className="link menu  p-2" to="/registro">
         Registro
       </Link>
@@ -46,6 +51,9 @@ export default function App() {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/actualizar">
+          <Actualizar />
         </Route>
         <Route path="/registro">
           <Registro />
